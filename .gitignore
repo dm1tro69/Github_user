@@ -1,0 +1,12 @@
+# Created by .ignore support plugin (hsz.mobi)
+/node_modules
+/.idea
+
+.idea/.gitignore
+.idea/Github_user.iml
+.idea/inspectionProfiles/
+.idea/misc.xml
+.idea/modules.xml
+README.md
+node_modules/
+
