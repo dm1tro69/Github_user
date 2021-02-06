@@ -1,9 +1,12 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import styled from 'styled-components';
 import { MdSearch } from 'react-icons/md';
 import { GithubContext } from '../context/context';
 const Search = () => {
   const [user, setUser] = useState('')
+
+  const {requests, error} = useContext(GithubContext)
+  console.log(requests, error)
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -15,6 +18,9 @@ const Search = () => {
 
   return <section className="section">
     <Wrapper className={'section-center'}>
+      {error.show && <ErrorWrapper>
+        <p>{error.msg}</p>
+      </ErrorWrapper>}
       <form onSubmit={handleSubmit}>
         <div className="form-control">
           <MdSearch/>
@@ -23,11 +29,11 @@ const Search = () => {
               value={user}
               type="text"
               placeholder={'enter github user'}/>
-          <button type="submit">search</button>
+          {requests > 0 && <button type="submit">search</button>}
 
         </div>
       </form>
-      <h3>request: 60 / 60</h3>
+      <h3>request: {requests} / 60</h3>
     </Wrapper>
   </section>
 };
