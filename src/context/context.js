@@ -3,6 +3,7 @@ import mockUser from './mockData.js/mockUser';
 import mockRepos from './mockData.js/mockRepos';
 import mockFollowers from './mockData.js/mockFollowers';
 import axios from 'axios';
+// import {loginError} from "@auth0/auth0-react/dist/utils";
 
 const rootUrl = 'https://api.github.com';
 
@@ -15,12 +16,35 @@ const GithubProvider = ({children}) => {
     const [followers, setFollowers] = useState(mockFollowers)
         //requests loading
     const [requests , setRequests] = useState(0)
-    const [loading, setLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
         //error
     const [error, setError] = useState({show: false, msg: ''})
 
+    const searchGithubUser = async (user) => {
+        toggleError()
+        setIsLoading(true)
+       const response = await axios.get(`${rootUrl}/users/${user}`)
+           .catch((err)=> console.log(err))
+        if(response){
+            setGithubUser(response.data)
+            const {login, followers_url} = response.data
+            //repos
+            axios(`${rootUrl}/users/${login}/repos?per_page=100`).
+                then((res)=> {setRepos(res.data)})
+            //followers
+            axios(`${followers_url}?per_page=100`).
+            then((res)=> {setFollowers(res.data)})
+        }else {
+            toggleError(true, 'there is no user with that username')
+        }
+        checkRequests()
+        setIsLoading(false)
+
+    }
+
 
     const checkRequests = () => {
+
         axios(`${rootUrl}/rate_limit`)
             .then(({data})=> {
                 let {rate: {remaining}} = data
@@ -47,7 +71,9 @@ const GithubProvider = ({children}) => {
         repos,
         followers,
         requests,
-        error
+        error,
+        searchGithubUser,
+        isLoading,
 
     }}>
         {children}
