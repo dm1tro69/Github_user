@@ -9,4 +9,5 @@
 .idea/modules.xml
 README.md
 node_modules/
+.env
 
