@@ -7,8 +7,7 @@ import { GithubProvider } from './context/context';
 import { Auth0Provider } from '@auth0/auth0-react';
 const domain = process.env.REACT_APP_DOMAIN
 const client_id = process.env.REACT_APP_CLIENT_ID
-//dev-m54p3u5r.eu.auth0.com
-//cNO1bIltSRJmoyLPiP2EsJ4M9geQghZ2
+
 
 ReactDOM.render(
   <React.StrictMode>
